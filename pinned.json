@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T15:46:43Z",
+  "generated_at": "2026-10-28T21:55:35Z",
   "source": "graphql",
   "profile": {
     "login": "hossein-bozorg-zadeh",
@@ -10,7 +10,7 @@
     "website": null,
     "followers": 1,
     "following": 3,
-    "public_repos": 13
+    "public_repos": 14
   },
   "pinned": [
     {
@@ -23,7 +23,7 @@
       "language_color": "#3572A5",
       "stars": 1,
       "forks": 0,
-      "updated_at": "2025-12-12T13:13:56Z"
+      "updated_at": "2026-10-28T19:31:52Z"
     },
     {
       "name": "tg-dl",
@@ -35,7 +35,7 @@
       "language_color": "#3572A5",
       "stars": 0,
       "forks": 0,
-      "updated_at": "2026-10-15T11:06:16Z"
+      "updated_at": "2026-10-28T16:14:19Z"
     },
     {
       "name": "subsource-telegram-bot",
@@ -47,7 +47,19 @@
       "language_color": "#3178c6",
       "stars": 0,
       "forks": 0,
-      "updated_at": "2026-10-28T13:50:39Z"
+      "updated_at": "2026-10-28T19:16:33Z"
+    },
+    {
+      "name": "project-launcher",
+      "full_name": "hossein-bozorg-zadeh/project-launcher",
+      "description": "Interactive launcher that runs all of @hossein-bozorg-zadeh's projects on any OS — asks which one, finds or clones it, and starts it",
+      "url": "https://github.com/hossein-bozorg-zadeh/project-launcher",
+      "homepage": null,
+      "language": "Shell",
+      "language_color": "#89e051",
+      "stars": 0,
+      "forks": 0,
+      "updated_at": "2026-10-28T21:02:55Z"
     }
   ]
 }
