@@ -1,0 +1,143 @@
+name: Refresh pinned repos
+
+# Rebuilds pinned.json from the pinned repositories on the GitHub profile,
+# so the portfolio always mirrors whatever is currently pinned there.
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-pinned
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch pinned repositories and profile
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LOGIN: hossein-bozorg-zadeh
+        run: |
+          set -euo pipefail
+
+          QUERY='query($login:String!){
+            user(login:$login){
+              login name bio avatarUrl(size:400) location websiteUrl
+              followers{totalCount} following{totalCount} repositories{totalCount}
+              pinnedItems(first:6 types:REPOSITORY){
+                nodes{ ... on Repository{
+                  name owner{login} description url homepageUrl
+                  stargazerCount forkCount updatedAt
+                  primaryLanguage{name color}
+                } }
+              }
+            }
+          }'
+
+          if gh api graphql -f query="$QUERY" -f login="$LOGIN" > /tmp/graphql.json 2>/tmp/graphql.err; then
+            jq '{
+              generated_at: (now | todateiso8601),
+              source: "graphql",
+              profile: {
+                login: .data.user.login,
+                name: .data.user.name,
+                bio: .data.user.bio,
+                avatar_url: .data.user.avatarUrl,
+                location: .data.user.location,
+                website: .data.user.websiteUrl,
+                followers: .data.user.followers.totalCount,
+                following: .data.user.following.totalCount,
+                public_repos: .data.user.repositories.totalCount
+              },
+              pinned: [ .data.user.pinnedItems.nodes[] | {
+                name,
+                full_name: (.owner.login + "/" + .name),
+                description,
+                url,
+                homepage: .homepageUrl,
+                language: .primaryLanguage.name,
+                language_color: .primaryLanguage.color,
+                stars: .stargazerCount,
+                forks: .forkCount,
+                updated_at: .updatedAt
+              } ]
+            }' /tmp/graphql.json > pinned.json
+          else
+            echo "GraphQL failed, falling back to the REST API:" >&2
+            cat /tmp/graphql.err >&2
+            LOGIN="$LOGIN" python3 - << 'PY'
+import json, os, urllib.request
+
+login = os.environ["LOGIN"]
+
+def get(url):
+    req = urllib.request.Request(url, headers={
+        "Accept": "application/vnd.github+json",
+        "Authorization": "Bearer " + os.environ.get("GH_TOKEN", ""),
+        "User-Agent": "pinned-refresh",
+    })
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.load(r)
+
+user = get(f"https://api.github.com/users/{login}")
+repos = get(f"https://api.github.com/users/{login}/repos?per_page=100")
+repos = [r for r in repos if not r.get("fork")]
+repos.sort(key=lambda r: (r.get("stargazers_count", 0), r.get("pushed_at") or ""), reverse=True)
+
+data = {
+    "generated_at": user.get("updated_at"),
+    "source": "fallback",
+    "profile": {
+        "login": user.get("login"),
+        "name": user.get("name"),
+        "bio": user.get("bio"),
+        "avatar_url": user.get("avatar_url"),
+        "location": user.get("location"),
+        "website": user.get("blog"),
+        "followers": user.get("followers"),
+        "following": user.get("following"),
+        "public_repos": user.get("public_repos"),
+    },
+    "pinned": [
+        {
+            "name": r["name"],
+            "full_name": r["full_name"],
+            "description": r.get("description"),
+            "url": r["html_url"],
+            "homepage": r.get("homepage") or None,
+            "language": r.get("language"),
+            "language_color": None,
+            "stars": r.get("stargazers_count", 0),
+            "forks": r.get("forks_count", 0),
+            "updated_at": r.get("pushed_at"),
+        }
+        for r in repos[:6]
+    ],
+}
+with open("pinned.json", "w") as f:
+    json.dump(data, f, indent=2)
+print("Wrote pinned.json from REST fallback (top 6 non-fork repos).")
+PY
+          fi
+
+          cat pinned.json
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- pinned.json; then
+            echo "pinned.json unchanged"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add pinned.json
+            git commit -m "chore: refresh pinned repos [skip ci]"
+            git push
+          fi
