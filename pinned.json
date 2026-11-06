@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T13:17:42Z",
+  "generated_at": "2026-11-06T22:27:15Z",
   "source": "graphql",
   "profile": {
     "login": "hossein-bozorg-zadeh",
@@ -10,9 +10,21 @@
     "website": null,
     "followers": 1,
     "following": 3,
-    "public_repos": 15
+    "public_repos": 16
   },
   "pinned": [
+    {
+      "name": "project-launcher",
+      "full_name": "hossein-bozorg-zadeh/project-launcher",
+      "description": "Interactive launcher that runs all of @hossein-bozorg-zadeh's projects on any OS — asks which one, finds or clones it, and starts it",
+      "url": "https://github.com/hossein-bozorg-zadeh/project-launcher",
+      "homepage": null,
+      "language": "Shell",
+      "language_color": "#89e051",
+      "stars": 0,
+      "forks": 0,
+      "updated_at": "2026-11-06T15:14:12Z"
+    },
     {
       "name": "GRMTB",
       "full_name": "hossein-bozorg-zadeh/GRMTB",
@@ -50,18 +62,6 @@
       "updated_at": "2026-10-28T19:16:33Z"
     },
     {
-      "name": "project-launcher",
-      "full_name": "hossein-bozorg-zadeh/project-launcher",
-      "description": "Interactive launcher that runs all of @hossein-bozorg-zadeh's projects on any OS — asks which one, finds or clones it, and starts it",
-      "url": "https://github.com/hossein-bozorg-zadeh/project-launcher",
-      "homepage": null,
-      "language": "Shell",
-      "language_color": "#89e051",
-      "stars": 0,
-      "forks": 0,
-      "updated_at": "2026-11-05T18:45:42Z"
-    },
-    {
       "name": "invoice-manager",
       "full_name": "hossein-bozorg-zadeh/invoice-manager",
       "description": "مدیریت فاکتور — fully client-side Persian invoice & finance manager (RTL, localStorage, shareable payment pages)",
@@ -72,6 +72,18 @@
       "stars": 0,
       "forks": 0,
       "updated_at": "2026-11-06T12:27:59Z"
+    },
+    {
+      "name": "wall-vault",
+      "full_name": "hossein-bozorg-zadeh/wall-vault",
+      "description": "Single-file wallpaper app — multi-source 4K backgrounds, search, favorites, lock-screen preview",
+      "url": "https://github.com/hossein-bozorg-zadeh/wall-vault",
+      "homepage": "https://hossein-bozorg-zadeh.github.io/wall-vault/",
+      "language": "HTML",
+      "language_color": "#e34c26",
+      "stars": 0,
+      "forks": 0,
+      "updated_at": "2026-11-06T14:35:55Z"
     }
   ]
 }
