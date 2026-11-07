@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-07T11:57:42Z",
+  "generated_at": "2026-11-07T17:16:41Z",
   "source": "graphql",
   "profile": {
     "login": "hossein-bozorg-zadeh",
@@ -30,12 +30,12 @@
       "full_name": "hossein-bozorg-zadeh/GRMTB",
       "description": "GitHub/Gitlab Release Monitor Telegram Bot",
       "url": "https://github.com/hossein-bozorg-zadeh/GRMTB",
-      "homepage": "https://t.me/gitchekerbot",
+      "homepage": "",
       "language": "Python",
       "language_color": "#3572A5",
       "stars": 1,
       "forks": 0,
-      "updated_at": "2026-10-28T19:31:52Z"
+      "updated_at": "2026-11-07T14:18:46Z"
     },
     {
       "name": "tg-dl",
